@@ -1,0 +1,23 @@
+{
+  "name": "microservice",
+  "version": "0.0.1",
+  "description": "REST API build with Node.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "DEBUG=* node -r esm app.js"
+  },
+  "author": {
+    "name": "Sergey Onufrienko <sergey@onufrienko.com>",
+    "url": "https://github.com/sonufrienko"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sonufrienko/microservice"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "esm": "^3.0.84",
+    "fastify": "^1.13.3"
+  }
+}
