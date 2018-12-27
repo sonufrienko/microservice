@@ -4,7 +4,8 @@
   "description": "REST API build with Node.js",
   "main": "app.js",
   "scripts": {
-    "start": "DEBUG=* node -r esm app.js"
+    "start": "DEBUG=* node -r esm app.js",
+    "prettier": "prettier --write \"*.js\""
   },
   "author": {
     "name": "Sergey Onufrienko <sergey@onufrienko.com>",
@@ -19,5 +20,8 @@
     "debug": "^4.1.1",
     "esm": "^3.0.84",
     "fastify": "^1.13.3"
+  },
+  "devDependencies": {
+    "prettier": "^1.15.3"
   }
 }
