@@ -4,7 +4,7 @@
   "description": "REST API build with Node.js",
   "main": "app.js",
   "scripts": {
-    "start": "DEBUG=* node -r esm app.js",
+    "start": "node -r dotenv/config -r esm app.js",
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -28,6 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^4.1.1",
+    "dotenv": "^6.2.0",
     "esm": "^3.0.84",
     "fastify": "^1.13.3"
   },

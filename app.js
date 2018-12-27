@@ -2,21 +2,22 @@ import fs from 'fs';
 import Fastify from 'fastify';
 import routes from './routes';
 
+const { PORT, LOG_LEVEL, SSL_KEY, SSL_CERT } = process.env;
+
 const fastify = Fastify({
 	http2: true,
 	https: {
 		allowHTTP1: true,
-		key: fs.readFileSync('./scripts/ssl/localhost.key'),
-		cert: fs.readFileSync('./scripts/ssl/localhost.crt')
+		key: fs.readFileSync(SSL_KEY),
+		cert: fs.readFileSync(SSL_CERT)
 	},
 	logger: {
-		level: 'error'
+		level: LOG_LEVEL
 	}
 });
 
 fastify.register(routes);
 
-const PORT = 4000;
 fastify.listen(PORT, (err, address) => {
 	if (err) {
 		fastify.log.error(err);
