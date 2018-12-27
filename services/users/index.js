@@ -15,6 +15,7 @@ export const getUsers = async (req, res) => {
 
 export const getSingleUser = async (req, res) => {
 	const userId = req.params.userId;
+
 	const user = { id: userId, name: 'Sergey Onufrienko', age: 33 };
 	return user;
 };
