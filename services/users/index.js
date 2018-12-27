@@ -4,6 +4,8 @@ export const getUsers = async (req, res) => {
 	const debug = Debug('getUsers');
 	const data = { items: [] };
 	debug('fetch');
+	// modifications
+	debug('modifications');
 	// filter data
 	debug('filter');
 	// sort data
