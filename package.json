@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node -r dotenv/config -r esm app.js",
+    "debug": "node --inspect -r dotenv/config -r esm app.js",
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
