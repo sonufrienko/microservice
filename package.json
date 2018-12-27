@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "DEBUG=* node -r esm app.js",
-    "prettier": "prettier --write \"*.js\""
+    "prettier": "prettier --write \"**/*.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": {
     "name": "Sergey Onufrienko <sergey@onufrienko.com>",
@@ -22,6 +24,11 @@
     "fastify": "^1.13.3"
   },
   "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.15.3"
   }
 }
