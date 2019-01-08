@@ -6,6 +6,7 @@ REST API build with Node.js
 ```shell
 git clone https://github.com/sonufrienko/microservice api
 cd api
+mv .env.example .env
 npm install
 npm start
 ```
