@@ -1,16 +1,9 @@
-import fs from 'fs';
 import Fastify from 'fastify';
 import routes from './routes';
 
-const { PORT, LOG_LEVEL, SSL_KEY, SSL_CERT } = process.env;
+const { PORT, LOG_LEVEL } = process.env;
 
 const fastify = Fastify({
-	http2: true,
-	https: {
-		allowHTTP1: true,
-		key: fs.readFileSync(SSL_KEY),
-		cert: fs.readFileSync(SSL_CERT)
-	},
 	logger: {
 		level: LOG_LEVEL
 	}
