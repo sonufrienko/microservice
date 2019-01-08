@@ -2,6 +2,16 @@
 REST API build with Node.js
 
 
+## Todo
+- [ ] Debuging
+- [ ] Testing
+- [ ] Logging
+- [ ] Compress
+- [ ] JWT
+- [ ] Sequelize
+- [ ] MongoDB
+
+
 ## Getting Started
 ```shell
 git clone https://github.com/sonufrienko/microservice api
