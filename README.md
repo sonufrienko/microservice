@@ -2,6 +2,15 @@
 REST API build with Node.js
 
 
+## Getting Started
+```shell
+git clone https://github.com/sonufrienko/microservice api
+cd api
+npm install
+npm start
+```
+
+
 ## Structure
 
 ```
