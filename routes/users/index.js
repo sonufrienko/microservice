@@ -15,6 +15,16 @@ const routes = [
 		method: 'POST',
 		url: '/users',
 		handler: usersService.addUser
+	},
+	{
+		method: 'PUT',
+		url: '/users/:userId',
+		handler: usersService.updateUser
+	},
+	{
+		method: 'DELETE',
+		url: '/users/:userId',
+		handler: usersService.deleteUser
 	}
 ];
 
