@@ -1,8 +1,14 @@
 import Debug from 'debug';
+import { db, ObjectID } from '../../db/mongo';
 
-export const getUsers = async (req, res) => {
+export const getUsers = async ({ params }, res) => {
 	const debug = Debug('getUsers');
-	const data = { items: [] };
+	const items = await db
+		.collection('users')
+		.find({})
+		.sort()
+		.toArray();
+	const data = { items };
 	debug('fetch');
 	// modifications
 	debug('modifications');
@@ -13,13 +19,29 @@ export const getUsers = async (req, res) => {
 	return data;
 };
 
-export const getSingleUser = async (req, res) => {
-	const { userId } = req.params;
-	const user = { id: userId, name: 'Sergey Onufrienko', age: 33 };
+export const getSingleUser = async ({ body, params: { userId } }, res) => {
+	const user = await db
+		.collection('users')
+		.findOne({ _id: new ObjectID(userId) });
+
 	return user;
 };
 
-export const addUser = async (req, res) => {
-	const user = { name: 'Sergey Onufrienko', age: 33 };
+export const addUser = async ({ body }, res) => {
+	const insertResult = await db.collection('users').insertOne(body);
+	const user = insertResult.ops[0];
 	return user;
+};
+
+export const updateUser = async ({ body, params: { userId } }, res) => {
+	await db
+		.collection('users')
+		.updateOne({ _id: new ObjectID(userId) }, { $set: body });
+
+	res.send(undefined);
+};
+
+export const deleteUser = async ({ body, params: { userId } }, res) => {
+	await db.collection('users').deleteOne({ _id: new ObjectID(userId) });
+	res.send(undefined);
 };
