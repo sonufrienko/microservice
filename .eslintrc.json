@@ -8,6 +8,6 @@
 	"rules": {
 		"prettier/prettier": ["error", { "singleQuote": true }],
 		"no-unused-vars": ["error", { "args": "none" }],
-		"import/no-mutable-exports": false
+		"import/no-mutable-exports": 0
 	}
 }
