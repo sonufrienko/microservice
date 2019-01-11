@@ -1,9 +1,9 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
-import logger from '../helper/logger';
+import logger from '../utils/logger';
 
 export { ObjectID } from 'mongodb';
-export let db = null;
+const mongo = {};
 
 const getConnectionUrl = () => {
 	const dbCred =
@@ -41,12 +41,12 @@ const connectWithRetry = () => {
 				);
 				setTimeout(connectWithRetry, RECONNECT_INTERVAL);
 			} else {
-				db = client.db(dbName);
-				db.on('close', () => {
+				mongo.db = client.db(dbName);
+				mongo.db.on('close', () => {
 					logger.info('MongoDB connection was closed');
 					connectWithRetry();
 				});
-				db.on('reconnect', () => {
+				mongo.db.on('reconnect', () => {
 					logger.warn('MongoDB reconnected');
 				});
 				logger.info(`MongoDB connected successfully. Database: ${dbName}.`);
@@ -56,3 +56,5 @@ const connectWithRetry = () => {
 };
 
 connectWithRetry();
+
+export default mongo;
