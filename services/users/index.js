@@ -1,26 +1,26 @@
 import Debug from 'debug';
-import { db, ObjectID } from '../../db/mongo';
+import mongo, { ObjectID } from '../../db/mongo';
+import sequelize from '../../db/sequelize';
 
 export const getUsers = async ({ params }, res) => {
 	const debug = Debug('getUsers');
-	const items = await db
+	debug('begin');
+
+	const dataFromPostgres = await sequelize.Users.findAll();
+	debug('data from Postgres');
+
+	const dataFromMongo = await mongo.db
 		.collection('users')
 		.find({})
 		.sort()
 		.toArray();
-	const data = { items };
-	debug('fetch');
-	// modifications
-	debug('modifications');
-	// filter data
-	debug('filter');
-	// sort data
-	debug('sort');
-	return data;
+	debug('data from MongoDB');
+
+	return [...dataFromPostgres, ...dataFromMongo];
 };
 
 export const getSingleUser = async ({ body, params: { userId } }, res) => {
-	const user = await db
+	const user = await mongo.db
 		.collection('users')
 		.findOne({ _id: new ObjectID(userId) });
 
@@ -28,13 +28,21 @@ export const getSingleUser = async ({ body, params: { userId } }, res) => {
 };
 
 export const addUser = async ({ body }, res) => {
-	const insertResult = await db.collection('users').insertOne(body);
-	const user = insertResult.ops[0];
-	return user;
+	const debug = Debug('addUser');
+	debug('begin');
+
+	const userFromPostgres = await sequelize.Users.create(body);
+	debug('data from Postgres');
+
+	const insertResult = await mongo.db.collection('users').insertOne(body);
+	const userFromMongo = insertResult.ops[0];
+	debug('data from MongoDB');
+
+	return { userFromPostgres, userFromMongo };
 };
 
 export const updateUser = async ({ body, params: { userId } }, res) => {
-	await db
+	await mongo.db
 		.collection('users')
 		.updateOne({ _id: new ObjectID(userId) }, { $set: body });
 
@@ -42,6 +50,6 @@ export const updateUser = async ({ body, params: { userId } }, res) => {
 };
 
 export const deleteUser = async ({ body, params: { userId } }, res) => {
-	await db.collection('users').deleteOne({ _id: new ObjectID(userId) });
+	await mongo.db.collection('users').deleteOne({ _id: new ObjectID(userId) });
 	res.send(undefined);
 };
