@@ -2,14 +2,22 @@
 REST API build with Node.js
 
 
+## Built with
+- Node.js
+- Fastify
+- DotEnv
+- ESM
+- MongoDB (native drive)
+- Sequelize + Sequelize CLI + PosttgreSQL
+- ESLinter + Prettier + Husky
+
+
 ## Todo
 - [ ] Debuging
 - [ ] Testing
 - [ ] Logging
 - [ ] Compress
 - [ ] JWT
-- [ ] Sequelize
-- [ ] MongoDB
 
 
 ## Getting Started
@@ -22,32 +30,42 @@ npm start
 ```
 
 
+## Running SQL database migrations
+```shell
+npx sequelize db:migrate
+```
+
+
 ## Structure
 
 ```
 .
 ├── config                  # App configuration files
-│   ├── sequalize.json      # Sequalize config
-│   ├── serviceOne.json     # ServiceOne config
+│   ├── sequelize.js        # sequelize config
+│   ├── serviceOne.js       # ServiceOne config
 │   └── ...                 # Other configurations
+├── db                      # Data access stuff
+│   ├── migrations          # Migrations
+│   ├── models              # Models
+│   ├── seeds               # Seeds
+│   └── mongo.js            # MongoDB instantiation
+│   └── sequelize.js        # Sequelize (PostgresSQL/MySQL) instantiation
+├── docs                    # Documentation
 ├── routes                  
 │   ├── controllers         # Request managers
 │   ├── middlewares         # Request middlewares
 │   └── routes.js           # Define routes and middlewares here
+├── scripts                 # Standalone scripts for dev uses
 ├── services                # External services implementation   
 │   ├── serviceOne
 │   └── serviceTwo
-├── db                      # Data access stuff  (Sequalize mostly)
-│   ├── models              # Models
-│   ├── migrations          # Migrations
-│   ├── seeds               # Seeds
-│   └── index.js            # Sequalize instantiation
-├── utils                   # Util libs (formats, validation, etc)
 ├── tests                   # Testing
-├── scripts                 # Standalone scripts for dev uses
+├── utils                   # Util libs (formats, validation, etc)
+├── .env                    # Environment variables
+├── .sequelizerc            # Sequelize CLI config
+├── app.js                  # App starting point
 ├── Dockerfile              # Dockerfile
-├── pm2.js                  # pm2 init
+├── process.json            # pm2 init
 ├── package.json           
-├── README.md         
-└── app.js                  # App starting point
+└── README.md         
 ```
