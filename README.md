@@ -1,12 +1,13 @@
-# microservice
-REST API build with Node.js
+![](microservice.png)
+
+# Ready to use Node.js microservice
 
 
 ## Built with
 - Node.js
 - Fastify
 - DotEnv
-- MongoDB (native drive)
+- MongoDB (native driver)
 - Sequelize + Sequelize CLI + PosttgreSQL
 - ESLinter + Prettier + Husky
 
@@ -33,6 +34,26 @@ npm start
 ```shell
 npx sequelize db:migrate
 ```
+
+## Environment variables
+
+Name | Value
+------------ | -------------
+PORT|4000
+LOG_LEVEL|info
+DEBUG|*
+MONGO_HOST|127.0.0.1
+MONGO_PORT|27017
+MONGO_DB|test
+MONGO_USER|
+MONGO_PASS|
+MONGO_URL|
+SQL_HOST|127.0.0.1
+SQL_PORT|5432
+SQL_DB|test
+SQL_USER|postgres
+SQL_PASS|
+SQL_DIALECT|postgres
 
 
 ## Structure
