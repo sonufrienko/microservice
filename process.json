@@ -6,7 +6,7 @@
 			"exec_mode": "cluster",
 			"instances": 0,
 			"max_restarts": 20,
-			"node_args": "-r dotenv/config -r esm"
+			"node_args": "-r dotenv/config"
 		}
 	]
 }

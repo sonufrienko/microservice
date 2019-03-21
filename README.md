@@ -6,7 +6,6 @@ REST API build with Node.js
 - Node.js
 - Fastify
 - DotEnv
-- ESM
 - MongoDB (native drive)
 - Sequelize + Sequelize CLI + PosttgreSQL
 - ESLinter + Prettier + Husky

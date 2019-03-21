@@ -1,8 +1,7 @@
-import url from 'url';
-import { MongoClient } from 'mongodb';
-import logger from '../utils/logger';
+const url = require('url');
+const { MongoClient } = require('mongodb');
+const logger = require('../utils/logger');
 
-export { ObjectID } from 'mongodb';
 const mongo = {};
 
 const getConnectionUrl = () => {
@@ -57,4 +56,4 @@ const connectWithRetry = () => {
 
 connectWithRetry();
 
-export default mongo;
+module.exports = mongo;

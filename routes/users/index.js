@@ -1,4 +1,4 @@
-import * as usersService from '../../services/users';
+const usersService = require('../../services/users');
 
 const routes = [
 	{
@@ -28,4 +28,4 @@ const routes = [
 	}
 ];
 
-export default routes;
+module.exports = routes;

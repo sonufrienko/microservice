@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+const Fastify = require('fastify');
 
 const fastify = Fastify({
 	logger: {
@@ -6,4 +6,4 @@ const fastify = Fastify({
 	}
 });
 
-export default fastify.log;
+module.exports = fastify.log;

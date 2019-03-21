@@ -1,6 +1,6 @@
-import usersRoutes from './users';
+const usersRoutes = require('./users');
 
-export default (fastify, opts, next) => {
+module.exports = (fastify, opts, next) => {
 	usersRoutes.forEach(route => fastify.route(route));
 	next();
 };

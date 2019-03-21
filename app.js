@@ -1,5 +1,5 @@
-import Fastify from 'fastify';
-import routes from './routes';
+const Fastify = require('fastify');
+const routes = require('./routes');
 
 const { PORT, LOG_LEVEL } = process.env;
 

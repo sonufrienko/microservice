@@ -1,8 +1,9 @@
-import Debug from 'debug';
-import mongo, { ObjectID } from '../../db/mongo';
-import sequelize from '../../db/sequelize';
+const Debug = require('debug');
+const { ObjectID } = require('mongodb');
+const mongo = require('../../db/mongo');
+const sequelize = require('../../db/sequelize');
 
-export const getUsers = async ({ params }, res) => {
+const getUsers = async ({ params }, res) => {
 	const debug = Debug('getUsers');
 	debug('begin');
 
@@ -19,7 +20,7 @@ export const getUsers = async ({ params }, res) => {
 	return [...dataFromPostgres, ...dataFromMongo];
 };
 
-export const getSingleUser = async ({ body, params: { userId } }, res) => {
+const getSingleUser = async ({ body, params: { userId } }, res) => {
 	const user = await mongo.db
 		.collection('users')
 		.findOne({ _id: new ObjectID(userId) });
@@ -27,7 +28,7 @@ export const getSingleUser = async ({ body, params: { userId } }, res) => {
 	return user;
 };
 
-export const addUser = async ({ body }, res) => {
+const addUser = async ({ body }, res) => {
 	const debug = Debug('addUser');
 	debug('begin');
 
@@ -41,7 +42,7 @@ export const addUser = async ({ body }, res) => {
 	return { userFromPostgres, userFromMongo };
 };
 
-export const updateUser = async ({ body, params: { userId } }, res) => {
+const updateUser = async ({ body, params: { userId } }, res) => {
 	await mongo.db
 		.collection('users')
 		.updateOne({ _id: new ObjectID(userId) }, { $set: body });
@@ -49,7 +50,15 @@ export const updateUser = async ({ body, params: { userId } }, res) => {
 	res.send(undefined);
 };
 
-export const deleteUser = async ({ body, params: { userId } }, res) => {
+const deleteUser = async ({ body, params: { userId } }, res) => {
 	await mongo.db.collection('users').deleteOne({ _id: new ObjectID(userId) });
 	res.send(undefined);
+};
+
+module.exports = {
+	getUsers,
+	getSingleUser,
+	addUser,
+	updateUser,
+	deleteUser
 };
