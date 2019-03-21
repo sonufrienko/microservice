@@ -9,7 +9,7 @@ const fastify = Fastify({
 	}
 });
 
-fastify.register(routes);
+fastify.register(routes, { prefix: '/v1' });
 
 fastify.listen(PORT, (err, address) => {
 	if (err) {
