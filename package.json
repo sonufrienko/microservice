@@ -1,7 +1,7 @@
 {
   "name": "microservice",
   "version": "0.0.1",
-  "description": "REST API build with Node.js",
+  "description": "Ready to use Node.js microservice",
   "main": "app.js",
   "scripts": {
     "start": "node -r dotenv/config app.js",
