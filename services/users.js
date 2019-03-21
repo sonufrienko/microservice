@@ -1,9 +1,9 @@
 const Debug = require('debug');
 const { ObjectID } = require('mongodb');
-const mongo = require('../../db/mongo');
-const sequelize = require('../../db/sequelize');
+const mongo = require('../db/mongo');
+const sequelize = require('../db/sequelize');
 
-const getUsers = async ({ params }, res) => {
+const getUsers = async () => {
 	const debug = Debug('getUsers');
 	debug('begin');
 
@@ -20,7 +20,7 @@ const getUsers = async ({ params }, res) => {
 	return [...dataFromPostgres, ...dataFromMongo];
 };
 
-const getSingleUser = async ({ body, params: { userId } }, res) => {
+const getSingleUser = async userId => {
 	const user = await mongo.db
 		.collection('users')
 		.findOne({ _id: new ObjectID(userId) });
@@ -28,31 +28,33 @@ const getSingleUser = async ({ body, params: { userId } }, res) => {
 	return user;
 };
 
-const addUser = async ({ body }, res) => {
+const addUser = async data => {
 	const debug = Debug('addUser');
 	debug('begin');
 
-	const userFromPostgres = await sequelize.Users.create(body);
+	const userFromPostgres = await sequelize.Users.create(data);
 	debug('data from Postgres');
 
-	const insertResult = await mongo.db.collection('users').insertOne(body);
+	const insertResult = await mongo.db.collection('users').insertOne(data);
 	const userFromMongo = insertResult.ops[0];
 	debug('data from MongoDB');
 
 	return { userFromPostgres, userFromMongo };
 };
 
-const updateUser = async ({ body, params: { userId } }, res) => {
+const updateUser = async (userId, data) => {
 	await mongo.db
 		.collection('users')
-		.updateOne({ _id: new ObjectID(userId) }, { $set: body });
-
-	res.send(undefined);
+		.updateOne({ _id: new ObjectID(userId) }, { $set: data });
 };
 
-const deleteUser = async ({ body, params: { userId } }, res) => {
-	await mongo.db.collection('users').deleteOne({ _id: new ObjectID(userId) });
-	res.send(undefined);
+const deleteUser = async userId => {
+	try {
+		await mongo.db.collection('users').deleteOne({ _id: new ObjectID(userId) });
+		return true;
+	} catch (e) {
+		return false;
+	}
 };
 
 module.exports = {
