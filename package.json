@@ -9,6 +9,9 @@
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cover": "jest --coverage",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -44,7 +47,9 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^1.2.1",
+    "jest": "^24.5.0",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "supertest": "^4.0.2"
   }
 }
