@@ -9,9 +9,9 @@
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cover": "jest --coverage",
+    "test": "jest --setupFiles dotenv/config",
+    "test:watch": "jest --watch --setupFiles dotenv/config",
+    "test:cover": "jest --coverage --setupFiles dotenv/config",
     "precommit": "lint-staged"
   },
   "lint-staged": {
