@@ -18,3 +18,5 @@ fastify.listen(PORT, (err, address) => {
 	}
 	fastify.log.info(`Server listening on ${address}`);
 });
+
+module.exports = fastify;
