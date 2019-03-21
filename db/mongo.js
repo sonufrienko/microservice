@@ -29,29 +29,25 @@ const connectWithRetry = () => {
 	const mongoPathName = url.parse(mongodbConnection).pathname;
 	const dbName = mongoPathName.substring(mongoPathName.lastIndexOf('/') + 1);
 
-	MongoClient.connect(
-		mongodbConnection,
-		CONNECT_OPTIONS,
-		(err, client) => {
-			if (err) {
-				logger.error(
-					`MongoDB connection was failed: ${err.message}`,
-					err.message
-				);
-				setTimeout(connectWithRetry, RECONNECT_INTERVAL);
-			} else {
-				mongo.db = client.db(dbName);
-				mongo.db.on('close', () => {
-					logger.info('MongoDB connection was closed');
-					connectWithRetry();
-				});
-				mongo.db.on('reconnect', () => {
-					logger.warn('MongoDB reconnected');
-				});
-				logger.info(`MongoDB connected successfully. Database: ${dbName}.`);
-			}
+	MongoClient.connect(mongodbConnection, CONNECT_OPTIONS, (err, client) => {
+		if (err) {
+			logger.error(
+				`MongoDB connection was failed: ${err.message}`,
+				err.message
+			);
+			setTimeout(connectWithRetry, RECONNECT_INTERVAL);
+		} else {
+			mongo.db = client.db(dbName);
+			mongo.db.on('close', () => {
+				logger.info('MongoDB connection was closed');
+				connectWithRetry();
+			});
+			mongo.db.on('reconnect', () => {
+				logger.warn('MongoDB reconnected');
+			});
+			logger.info(`MongoDB connected successfully. Database: ${dbName}.`);
 		}
-	);
+	});
 };
 
 connectWithRetry();
