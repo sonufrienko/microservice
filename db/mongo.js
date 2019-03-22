@@ -19,7 +19,7 @@ const getConnectionUrl = () => {
 
 const RECONNECT_INTERVAL = 1000;
 const CONNECT_OPTIONS = {
-	reconnectTries: 3600,
+	reconnectTries: 60 * 60 * 24,
 	reconnectInterval: RECONNECT_INTERVAL,
 	useNewUrlParser: true
 };
