@@ -35,6 +35,24 @@ npm start
 npx sequelize db:migrate
 ```
 
+## Start with PM2
+```shell
+pm2 start process.json
+```
+
+## Start with Docker
+```shell
+# Build image
+docker build -t app/microservice:v1 .
+
+# Run on port 4000
+docker run -p 4000:4000 -d --name microservice app/microservice:v1
+
+# Run on host network
+docker run -d --name microservice --network=host app/microservice:v1
+```
+
+
 ## Environment variables
 
 Name | Value
