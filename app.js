@@ -1,5 +1,9 @@
+const http = require('http');
 const Fastify = require('fastify');
 const routes = require('./routes/routes');
+
+// Enable KeepAlive to speed up HTTP requests to another microservices
+http.globalAgent.keepAlive = true;
 
 const { PORT, LOG_LEVEL } = process.env;
 
