@@ -1,35 +1,12 @@
+const express = require('express');
 const users = require('./controllers/users');
 
-module.exports = (fastify, opts, next) => {
-	fastify.route({
-		method: 'GET',
-		url: '/users',
-		handler: users.getUsers
-	});
+const router = express.Router();
 
-	fastify.route({
-		method: 'GET',
-		url: '/users/:userId',
-		handler: users.getSingleUser
-	});
+router.get('/users', users.getUsers);
+router.get('/users/:userId', users.getSingleUser);
+router.post('/users', users.addUser);
+router.put('/users/:userId', users.updateUser);
+router.delete('/users/:userId', users.deleteUser);
 
-	fastify.route({
-		method: 'POST',
-		url: '/users',
-		handler: users.addUser
-	});
-
-	fastify.route({
-		method: 'PUT',
-		url: '/users/:userId',
-		handler: users.updateUser
-	});
-
-	fastify.route({
-		method: 'DELETE',
-		url: '/users/:userId',
-		handler: users.deleteUser
-	});
-
-	next();
-};
+module.exports = router;

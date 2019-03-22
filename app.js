@@ -1,26 +1,24 @@
 const http = require('http');
-const Fastify = require('fastify');
+const app = require('express')();
+const bodyParser = require('body-parser');
+const winston = require('winston');
+
+const logger = require('./utils/logger');
 const routes = require('./routes/routes');
 
 // Enable KeepAlive to speed up HTTP requests to another microservices
 http.globalAgent.keepAlive = true;
 
-const { PORT, LOG_LEVEL } = process.env;
+const { PORT } = process.env;
 
-const fastify = Fastify({
-	logger: {
-		level: LOG_LEVEL
-	}
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use('/v1', routes);
+app.use(logger.responseWithError);
+
+const server = app.listen(PORT, () => {
+	const serverAddress = server.address();
+	winston.info(`Server listening on http://localhost:${serverAddress.port}`);
 });
 
-fastify.register(routes, { prefix: '/v1' });
-
-fastify.listen(PORT, (err, address) => {
-	if (err) {
-		fastify.log.error(err);
-		process.exit(1);
-	}
-	fastify.log.info(`Server listening on ${address}`);
-});
-
-module.exports = fastify;
+module.exports = server;

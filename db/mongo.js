@@ -1,6 +1,6 @@
 const url = require('url');
 const { MongoClient } = require('mongodb');
-const logger = require('../utils/logger');
+const winston = require('winston');
 
 const mongo = {};
 
@@ -31,7 +31,7 @@ const connectWithRetry = () => {
 
 	MongoClient.connect(mongodbConnection, CONNECT_OPTIONS, (err, client) => {
 		if (err) {
-			logger.error(
+			winston.error(
 				`MongoDB connection was failed: ${err.message}`,
 				err.message
 			);
@@ -39,13 +39,13 @@ const connectWithRetry = () => {
 		} else {
 			mongo.db = client.db(dbName);
 			mongo.db.on('close', () => {
-				logger.info('MongoDB connection was closed');
+				winston.info('MongoDB connection was closed');
 				connectWithRetry();
 			});
 			mongo.db.on('reconnect', () => {
-				logger.warn('MongoDB reconnected');
+				winston.warn('MongoDB reconnected');
 			});
-			logger.info(`MongoDB connected successfully. Database: ${dbName}.`);
+			winston.info(`MongoDB connected successfully. Database: ${dbName}.`);
 		}
 	});
 };
