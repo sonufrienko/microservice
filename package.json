@@ -12,6 +12,7 @@
     "test": "jest --setupFiles dotenv/config --forceExit",
     "test:watch": "jest --watch --setupFiles dotenv/config",
     "test:cover": "jest --coverage --setupFiles dotenv/config",
+    "test:load": "npx autocannon -c 100 -d 5 -p 10 localhost:4000/v1/users",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -41,6 +42,7 @@
     "sequelize-cli": "^5.4.0"
   },
   "devDependencies": {
+    "autocannon": "^3.2.1",
     "eslint": "^5.15.3",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
