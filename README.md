@@ -93,7 +93,6 @@ SQL_POOL_LIMIT|100
 .
 ├── config                  # App configuration files
 │   ├── sequelize.js        # sequelize config
-│   ├── serviceOne.js       # ServiceOne config
 │   └── ...                 # Other configurations
 ├── db                      # Data access stuff
 │   ├── migrations          # Migrations
@@ -102,6 +101,7 @@ SQL_POOL_LIMIT|100
 │   └── mongo.js            # MongoDB instantiation
 │   └── sequelize.js        # Sequelize (PostgresSQL/MySQL) instantiation
 ├── docs                    # Documentation
+├── helpers                 # Helpers (formats, validation, etc)
 ├── routes                  
 │   ├── controllers         # Request managers
 │   ├── middlewares         # Request middlewares
@@ -111,12 +111,13 @@ SQL_POOL_LIMIT|100
 │   ├── serviceOne
 │   └── serviceTwo
 ├── tests                   # Testing
-├── utils                   # Util libs (formats, validation, etc)
 ├── .env                    # Environment variables
 ├── .sequelizerc            # Sequelize CLI config
 ├── app.js                  # App starting point
 ├── Dockerfile              # Dockerfile
 ├── process.json            # pm2 init
-├── package.json           
+├── package.json
+├── private.key             # Sign tokens
+├── public.key              # Validate tokens
 └── README.md         
 ```
