@@ -1,11 +1,12 @@
 const winston = require('winston');
 
-const { LOG_LEVEL } = process.env;
+const { LOG_LEVEL, NODE_ENV } = process.env;
 
 winston.configure({
 	transports: [
 		new winston.transports.Console({
-			level: LOG_LEVEL,
+			// Show only errors on test
+			level: NODE_ENV === 'test' ? 'error' : LOG_LEVEL,
 			handleExceptions: true,
 			format: winston.format.combine(
 				winston.format.colorize(),
