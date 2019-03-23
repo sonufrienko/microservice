@@ -9,7 +9,7 @@
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest --setupFiles dotenv/config --forceExit --maxWorkers 1",
+    "test": "jest --setupFiles dotenv/config --forceExit",
     "test:watch": "jest --watch --setupFiles dotenv/config",
     "test:cover": "jest --coverage --setupFiles dotenv/config",
     "test:load": "npx autocannon -c 100 -d 5 -p 10 localhost:4000/v1/users",

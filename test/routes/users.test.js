@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+const request = require('supertest');
 const app = require('../../app');
 const security = require('../../helpers/security');
 
@@ -7,21 +7,9 @@ const tokenPayload = {
 	email: 'test@example.com'
 };
 
-let request = null;
-let server = null;
-
-beforeAll(done => {
-	server = app.listen(done);
-	request = supertest.agent(server);
-});
-
-afterAll(done => {
-	server.close(done);
-});
-
 test('GET /users', async () => {
 	const token = await security.getSignedToken(tokenPayload);
-	const response = await request
+	const response = await request(app)
 		.get('/v1/users')
 		.set('Authorization', `Bearer ${token}`)
 		.expect(200)

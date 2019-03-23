@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+const request = require('supertest');
 const app = require('../app');
 const security = require('../helpers/security');
 
@@ -9,20 +9,8 @@ const tokenPayload = {
 
 const delay = ms => setTimeout(() => Promise.resolve(), ms);
 
-let request = null;
-let server = null;
-
-beforeAll(done => {
-	server = app.listen(done);
-	request = supertest.agent(server);
-});
-
-afterAll(done => {
-	server.close(done);
-});
-
 test('Healthcheck', async () => {
-	await request
+	await request(app)
 		.get('/')
 		.expect(200)
 		.expect('Content-Type', /text/)
@@ -31,7 +19,7 @@ test('Healthcheck', async () => {
 
 test('Valid authorization', async () => {
 	const token = await security.getSignedToken(tokenPayload);
-	await request
+	await request(app)
 		.get('/v1/users')
 		.set('Authorization', `Bearer ${token}`)
 		.expect(200)
@@ -39,7 +27,9 @@ test('Valid authorization', async () => {
 });
 
 test('Without authorization header', async () => {
-	await request.get('/v1/users').expect(401);
+	await request(app)
+		.get('/v1/users')
+		.expect(401);
 });
 
 test('Expired token', async () => {
@@ -47,7 +37,7 @@ test('Expired token', async () => {
 		expiresIn: '100'
 	});
 	await delay(200);
-	await request
+	await request(app)
 		.get('/v1/users')
 		.set('Authorization', `Bearer ${token}`)
 		.expect(401);
