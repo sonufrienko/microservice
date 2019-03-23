@@ -8,6 +8,7 @@ module.exports = {
 		host: process.env.SQL_HOST,
 		port: process.env.SQL_PORT,
 		dialect: process.env.SQL_DIALECT,
+		logging: false,
 		pool: {
 			max: Number(process.env.SQL_POOL_LIMIT),
 			min: 0,

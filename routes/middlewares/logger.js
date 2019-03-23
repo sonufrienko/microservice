@@ -1,9 +1,11 @@
 const winston = require('winston');
 
+const { LOG_LEVEL } = process.env;
+
 winston.configure({
 	transports: [
 		new winston.transports.Console({
-			level: 'debug',
+			level: LOG_LEVEL,
 			handleExceptions: true,
 			format: winston.format.combine(
 				winston.format.colorize(),
@@ -19,7 +21,7 @@ winston.configure({
 	]
 });
 
-const responseWithError = (err, req, res, next) => {
+const logger = (err, req, res, next) => {
 	if (err && err.name === 'UnauthorizedError') {
 		// log unauthorized requests
 		res.status(401).end();
@@ -34,6 +36,4 @@ const responseWithError = (err, req, res, next) => {
 	}
 };
 
-module.exports = {
-	responseWithError
-};
+module.exports = logger;
