@@ -3,29 +3,35 @@
 # Ready to use Node.js microservice
 
 
-## Built with
-- Node.js
-- Fastify
-- DotEnv
-- MongoDB (native driver)
-- Sequelize + Sequelize CLI + PosttgreSQL
-- ESLinter + Prettier + Husky
-
-
-## Todo
-- [ ] Debuging
-- [ ] Testing
-- [ ] Logging
-- [ ] Compress
-- [ ] JWT
-
+## Features
+- **Framework**: Express
+- **Authentication**: JWT with public/private key file
+- **Database**: MongoDB (Native), PostgreSQL (Sequelize)
+- **Code**: ESLint, Prettier, Husky
+- **Debuging**: Debug
+- **Logging**: Winston
+- **Testing**: Jest, SuperTest, AutoCannon
+- **Other**: PM2, DotEnv
+- Well structured
+- API versioning
 
 ## Getting Started
 ```shell
-git clone https://github.com/sonufrienko/microservice api
-cd api
+git clone https://github.com/sonufrienko/microservice
+cd microservice
+
+# Create environment variables from example
 mv .env.example .env
+
+# Generate JWT keys
+ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key \
+&& rm private.key.pub \
+&& openssl rsa -in private.key -pubout -outform PEM -out public.key
+
+# Install all dependencies
 npm install
+
+# Run on port 4000
 npm start
 ```
 
@@ -42,6 +48,11 @@ pm2 start process.json
 
 ## Start with Docker
 ```shell
+# Generate JWT keys
+ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key \
+&& rm private.key.pub \
+&& openssl rsa -in private.key -pubout -outform PEM -out public.key
+
 # Build image
 docker build -t app/microservice:v1 .
 
