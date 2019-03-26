@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "celebrate": "^9.1.0",
     "compression": "^1.7.4",
     "debug": "^4.1.1",
     "dotenv": "^7.0.0",

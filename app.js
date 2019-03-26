@@ -3,6 +3,7 @@ const app = require('express')();
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const winston = require('winston');
+const { errors } = require('celebrate');
 
 const authorization = require('./routes/middlewares/authorization');
 const logger = require('./routes/middlewares/logger');
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.status(200).send('ok'));
 app.use(authorization);
 app.use('/v1', routes);
+app.use(errors());
 app.use(logger);
 
 if (NODE_ENV !== 'test') {
