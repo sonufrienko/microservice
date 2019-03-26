@@ -1,0 +1,31 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Start",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run-script", "debug"],
+			"port": 9229
+		},
+		{
+			"name": "Attach",
+			"type": "node",
+			"request": "attach",
+			"restart": true
+		},
+		{
+			"name": "Jest All",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+			"args": ["--setupFiles", "dotenv/config", "--forceExit", "--runInBand"],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		}
+	]
+}
