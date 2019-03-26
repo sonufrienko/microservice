@@ -8,12 +8,13 @@
 - **Authentication**: JWT with public/private key file
 - **Database**: MongoDB (Native), PostgreSQL (Sequelize)
 - **Code**: ESLint, Prettier, Husky
-- **Debuging**: Debug
+- **Debuging**: Debug, VS Code configurations
 - **Logging**: Winston
 - **Testing**: Jest, SuperTest, AutoCannon
 - **Other**: PM2, DotEnv
 - Well structured
 - API versioning
+- Request Validation
 
 ## Getting Started
 ```shell
