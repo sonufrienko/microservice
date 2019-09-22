@@ -18,5 +18,7 @@ jobs:
           ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key
           rm private.key.pub
           openssl rsa -in private.key -pubout -outform PEM -out public.key
+          pwd
+          ls -lah
       - name: Test
         run: docker-compose up --exit-code-from web
