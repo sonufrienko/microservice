@@ -5,7 +5,8 @@ const RECONNECT_INTERVAL = 1000;
 const CONNECT_OPTIONS = {
 	reconnectTries: 60 * 60 * 24,
 	reconnectInterval: RECONNECT_INTERVAL,
-	useNewUrlParser: true
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 };
 
 const mongo = {};
