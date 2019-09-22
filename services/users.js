@@ -1,14 +1,14 @@
 const Debug = require('debug');
 const { ObjectID } = require('mongodb');
 const mongo = require('../db/mongo');
-const sequelize = require('../db/sequelize');
+
+// const sequelize = require('../db/sequelize');
+// const users = await sequelize.Users.findAll();
+// const user = await sequelize.Users.create(data);
 
 const getUsers = async () => {
 	const debug = Debug('getUsers');
 	debug('begin');
-
-	const dataFromPostgres = await sequelize.Users.findAll();
-	debug('data from Postgres');
 
 	const dataFromMongo = await mongo.db
 		.collection('users')
@@ -17,7 +17,7 @@ const getUsers = async () => {
 		.toArray();
 	debug('data from MongoDB');
 
-	return [...dataFromPostgres, ...dataFromMongo];
+	return dataFromMongo;
 };
 
 const getSingleUser = async userId => {
@@ -32,14 +32,11 @@ const addUser = async data => {
 	const debug = Debug('addUser');
 	debug('begin');
 
-	const userFromPostgres = await sequelize.Users.create(data);
-	debug('data from Postgres');
-
 	const insertResult = await mongo.db.collection('users').insertOne(data);
 	const userFromMongo = insertResult.ops[0];
 	debug('data from MongoDB');
 
-	return { userFromPostgres, userFromMongo };
+	return userFromMongo;
 };
 
 const updateUser = async (userId, data) => {
