@@ -2,6 +2,8 @@
 
 # Ready to use Node.js microservice
 
+![](https://github.com/sonufrienko/microservice/workflows/test-integration/badge.svg)
+
 
 ## Features
 - **Framework**: Express
