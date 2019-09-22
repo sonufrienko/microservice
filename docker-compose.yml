@@ -1,0 +1,42 @@
+version: "2"
+services:
+  web:
+    image: "node:lts"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=test
+      - PORT=4000
+      - LOG_LEVEL=info
+      - DEBUG=
+      - MONGO_HOST=
+      - MONGO_PORT=
+      - MONGO_DB=
+      - MONGO_USER=
+      - MONGO_PASS=
+      - MONGO_URL=mongodb://mongo/test
+      - SQL_HOST=
+      - SQL_HOST_READ=
+      - SQL_HOST_WRITE=
+      - SQL_PORT=5432
+      - SQL_DB=test
+      - SQL_USER=postgres
+      - SQL_PASS=
+      - SQL_DIALECT=postgres
+      - SQL_POOL_LIMIT=100
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    command: "npm run test:integration"
+
+  mongo:
+    image: mongo:latest
+    logging:
+      driver: none
+    ports:
+      - "27017:27017"

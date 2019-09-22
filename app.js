@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const winston = require('winston');
 const { errors } = require('celebrate');
 
+const mongo = require('./db/mongo');
 const authorization = require('./routes/middlewares/authorization');
 const logger = require('./routes/middlewares/logger');
 const routes = require('./routes/routes');
@@ -25,9 +26,12 @@ app.use(errors());
 app.use(logger);
 
 if (NODE_ENV !== 'test') {
-	app.listen(PORT, () => {
-		winston.info(`Server listening on http://localhost:${PORT}`);
-	});
+	(async () => {
+		await mongo.connectWithRetry();
+		app.listen(PORT, () => {
+			winston.info(`Server listening on http://localhost:${PORT}`);
+		});
+	})();
 }
 
 module.exports = app;

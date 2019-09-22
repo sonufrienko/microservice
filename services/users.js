@@ -1,56 +1,70 @@
 const Debug = require('debug');
 const { ObjectID } = require('mongodb');
 const mongo = require('../db/mongo');
-const sequelize = require('../db/sequelize');
+
+// const sequelize = require('../db/sequelize');
+// const users = await sequelize.Users.findAll();
+// const user = await sequelize.Users.create(data);
+
+const renameFields = item => ({
+	...item,
+	id: item._id,
+	_id: undefined
+});
 
 const getUsers = async () => {
-	const debug = Debug('getUsers');
-	debug('begin');
+	const debug = Debug('app:api:users');
+	debug('getUsers:start');
 
-	const dataFromPostgres = await sequelize.Users.findAll();
-	debug('data from Postgres');
-
-	const dataFromMongo = await mongo.db
+	const itemsRaw = await mongo.db
 		.collection('users')
 		.find({})
 		.sort()
 		.toArray();
-	debug('data from MongoDB');
 
-	return [...dataFromPostgres, ...dataFromMongo];
+	const items = itemsRaw.map(renameFields);
+	debug('getUsers:end');
+
+	return items;
 };
 
 const getSingleUser = async userId => {
+	const debug = Debug('app:api:users');
+	debug('getSingleUser:start');
 	const user = await mongo.db
 		.collection('users')
 		.findOne({ _id: new ObjectID(userId) });
 
-	return user;
+	debug('getSingleUser:end');
+	return renameFields(user);
 };
 
 const addUser = async data => {
-	const debug = Debug('addUser');
-	debug('begin');
-
-	const userFromPostgres = await sequelize.Users.create(data);
-	debug('data from Postgres');
+	const debug = Debug('app:api:users');
+	debug('add:start');
 
 	const insertResult = await mongo.db.collection('users').insertOne(data);
-	const userFromMongo = insertResult.ops[0];
-	debug('data from MongoDB');
+	const { _id: id } = insertResult.ops[0];
 
-	return { userFromPostgres, userFromMongo };
+	debug('add:end');
+	return { id };
 };
 
 const updateUser = async (userId, data) => {
+	const debug = Debug('app:api:users');
+	debug('update:start');
 	await mongo.db
 		.collection('users')
 		.updateOne({ _id: new ObjectID(userId) }, { $set: data });
+	debug('update:end');
 };
 
 const deleteUser = async userId => {
 	try {
+		const debug = Debug('app:api:users');
+		debug('delete:start');
 		await mongo.db.collection('users').deleteOne({ _id: new ObjectID(userId) });
+		debug('delete:end');
 		return true;
 	} catch (e) {
 		return false;

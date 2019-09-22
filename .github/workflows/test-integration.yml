@@ -1,0 +1,23 @@
+name: test-integration
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Use Node.js v10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Install
+        run: npm install
+      - name: Generate JWT keys
+        run: |
+          ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key
+          rm private.key.pub
+          openssl rsa -in private.key -pubout -outform PEM -out public.key
+          chmod 644 public.key private.key
+      - name: Test
+        run: docker-compose up --exit-code-from web

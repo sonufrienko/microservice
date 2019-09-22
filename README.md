@@ -2,7 +2,6 @@
 
 # Ready to use Node.js microservice
 
-
 ## Features
 - **Framework**: Express
 - **Authentication**: JWT with public/private key file
@@ -11,6 +10,7 @@
 - **Debuging**: Debug, VS Code configurations
 - **Logging**: Winston
 - **Testing**: Jest, SuperTest, AutoCannon
+- **Continuous Integration**: GitHub Actions + Docker Compose
 - **Other**: PM2, DotEnv
 - Well structured
 - API versioning

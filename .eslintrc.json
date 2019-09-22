@@ -8,6 +8,7 @@
 	},
 	"rules": {
 		"prettier/prettier": ["error", { "singleQuote": true }],
-		"no-unused-vars": ["error", { "args": "none" }]
+		"no-unused-vars": ["error", { "args": "none" }],
+		"no-underscore-dangle": ["error", { "allow": ["_id"] }]
 	}
 }

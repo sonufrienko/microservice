@@ -13,12 +13,12 @@
     "test:watch": "jest --watch --setupFiles dotenv/config",
     "test:cover": "jest --coverage --setupFiles dotenv/config",
     "test:load": "npx autocannon -c 100 -d 5 -p 10 localhost:4000/v1/users",
-    "precommit": "lint-staged"
+    "test:integration": "npm test"
   },
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "eslint .",
+      "eslint",
       "git add"
     ]
   },
@@ -59,5 +59,10 @@
     "lint-staged": "^8.1.5",
     "prettier": "^1.16.4",
     "supertest": "^4.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
