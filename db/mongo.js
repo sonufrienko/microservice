@@ -72,8 +72,6 @@ const connectWithRetry = async () => {
 	}
 };
 
-(async () => {
-	await connectWithRetry();
-})();
+mongo.connectWithRetry = connectWithRetry;
 
 module.exports = mongo;
