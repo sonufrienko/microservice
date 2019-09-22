@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const security = require('../helpers/security');
+const mongo = require('../db/mongo');
 
 const tokenPayload = {
 	jti: '123',
@@ -9,36 +10,42 @@ const tokenPayload = {
 
 const delay = ms => setTimeout(() => Promise.resolve(), ms);
 
-test('Healthcheck', async () => {
-	await request(app)
-		.get('/')
-		.expect(200)
-		.expect('Content-Type', /text/)
-		.expect('ok');
-});
-
-test('Valid authorization', async () => {
-	const token = await security.getSignedToken(tokenPayload);
-	await request(app)
-		.get('/v1/users')
-		.set('Authorization', `Bearer ${token}`)
-		.expect(200)
-		.expect('Content-Type', /json/);
-});
-
-test('Without authorization header', async () => {
-	await request(app)
-		.get('/v1/users')
-		.expect(401);
-});
-
-test('Expired token', async () => {
-	const token = await security.getSignedToken(tokenPayload, {
-		expiresIn: '100'
+describe('Server', () => {
+	beforeAll(async () => {
+		await mongo.connectWithRetry();
 	});
-	await delay(200);
-	await request(app)
-		.get('/v1/users')
-		.set('Authorization', `Bearer ${token}`)
-		.expect(401);
+
+	test('Healthcheck', async () => {
+		await request(app)
+			.get('/')
+			.expect(200)
+			.expect('Content-Type', /text/)
+			.expect('ok');
+	});
+
+	test('Valid authorization', async () => {
+		const token = await security.getSignedToken(tokenPayload);
+		await request(app)
+			.get('/v1/users')
+			.set('Authorization', `Bearer ${token}`)
+			.expect(200)
+			.expect('Content-Type', /json/);
+	});
+
+	test('Without authorization header', async () => {
+		await request(app)
+			.get('/v1/users')
+			.expect(401);
+	});
+
+	test('Expired token', async () => {
+		const token = await security.getSignedToken(tokenPayload, {
+			expiresIn: '100'
+		});
+		await delay(200);
+		await request(app)
+			.get('/v1/users')
+			.set('Authorization', `Bearer ${token}`)
+			.expect(401);
+	});
 });
