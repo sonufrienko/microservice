@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const winston = require('winston');
 const { errors } = require('celebrate');
 
+const mongo = require('./db/mongo'); // eslint-disable-line
 const authorization = require('./routes/middlewares/authorization');
 const logger = require('./routes/middlewares/logger');
 const routes = require('./routes/routes');
