@@ -6,19 +6,26 @@ const mongo = require('../db/mongo');
 // const users = await sequelize.Users.findAll();
 // const user = await sequelize.Users.create(data);
 
+const renameFields = item => ({
+	...item,
+	id: item._id,
+	_id: undefined
+});
+
 const getUsers = async () => {
 	const debug = Debug('app:api:users');
 	debug('getUsers:start');
 
-	const dataFromMongo = await mongo.db
+	const itemsRaw = await mongo.db
 		.collection('users')
 		.find({})
 		.sort()
 		.toArray();
 
+	const items = itemsRaw.map(renameFields);
 	debug('getUsers:end');
 
-	return dataFromMongo;
+	return items;
 };
 
 const getSingleUser = async userId => {
@@ -29,7 +36,7 @@ const getSingleUser = async userId => {
 		.findOne({ _id: new ObjectID(userId) });
 
 	debug('getSingleUser:end');
-	return user;
+	return renameFields(user);
 };
 
 const addUser = async data => {
@@ -37,10 +44,10 @@ const addUser = async data => {
 	debug('add:start');
 
 	const insertResult = await mongo.db.collection('users').insertOne(data);
-	const userFromMongo = insertResult.ops[0];
-	debug('add:end');
+	const { _id: id } = insertResult.ops[0];
 
-	return userFromMongo;
+	debug('add:end');
+	return { id };
 };
 
 const updateUser = async (userId, data) => {
