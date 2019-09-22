@@ -1,21 +1,5 @@
-const url = require('url');
 const { MongoClient } = require('mongodb');
 const winston = require('winston');
-
-const mongo = {};
-
-const getConnectionUrl = () => {
-	const dbCred =
-		process.env.MONGO_USER.length > 0 || process.env.MONGO_PASS.length > 0
-			? `${process.env.MONGO_USER}:${process.env.MONGO_PASS}@`
-			: '';
-	const dbUrl =
-		process.env.MONGO_URL ||
-		`mongodb://${dbCred}${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${
-			process.env.MONGO_DB
-		}`;
-	return dbUrl;
-};
 
 const RECONNECT_INTERVAL = 1000;
 const CONNECT_OPTIONS = {
@@ -24,32 +8,72 @@ const CONNECT_OPTIONS = {
 	useNewUrlParser: true
 };
 
-const connectWithRetry = () => {
-	const mongodbConnection = getConnectionUrl();
-	const mongoPathName = url.parse(mongodbConnection).pathname;
-	const dbName = mongoPathName.substring(mongoPathName.lastIndexOf('/') + 1);
+const mongo = {};
 
-	MongoClient.connect(mongodbConnection, CONNECT_OPTIONS, (err, client) => {
-		if (err) {
-			winston.error(
-				`MongoDB connection was failed: ${err.message}`,
-				err.message
-			);
-			setTimeout(connectWithRetry, RECONNECT_INTERVAL);
-		} else {
-			mongo.db = client.db(dbName);
-			mongo.db.on('close', () => {
-				winston.info('MongoDB connection was closed');
-				connectWithRetry();
-			});
-			mongo.db.on('reconnect', () => {
-				winston.warn('MongoDB reconnected');
-			});
-			winston.info(`MongoDB connected successfully. Database: ${dbName}.`);
-		}
-	});
+const composeConnectionUrl = env => {
+	const {
+		MONGO_USER = '',
+		MONGO_PASS = '',
+		MONGO_HOST = '',
+		MONGO_PORT = 27017,
+		MONGO_DB = ''
+	} = env;
+
+	const credentials =
+		MONGO_USER.length || MONGO_PASS.length
+			? `${MONGO_USER}:${MONGO_PASS}@`
+			: '';
+
+	return `mongodb://${credentials}${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 };
 
-connectWithRetry();
+const connectionUrlIsCorrect = uri => uri && uri.includes('mongodb://');
+
+const getConnectionUrl = env => {
+	const { MONGO_URL } = env;
+	const dbUrl = connectionUrlIsCorrect(MONGO_URL)
+		? MONGO_URL
+		: composeConnectionUrl(env);
+	return dbUrl;
+};
+
+const getDBNameFromUri = uri => uri.slice(uri.lastIndexOf('/') + 1);
+
+const connectAsync = ({ uri, options }) =>
+	new Promise((resolve, reject) => {
+		MongoClient.connect(uri, options, (err, client) =>
+			err ? reject(err) : resolve(client)
+		);
+	});
+
+const connectWithRetry = async () => {
+	const uri = getConnectionUrl(process.env);
+	const dbName = getDBNameFromUri(uri);
+	try {
+		const client = await connectAsync({
+			uri,
+			options: CONNECT_OPTIONS
+		});
+		mongo.db = client.db(dbName);
+		mongo.db.on('close', () => {
+			winston.warn('MongoDB connection was closed');
+			connectWithRetry();
+		});
+		mongo.db.on('reconnect', () => {
+			winston.warn('MongoDB reconnected');
+		});
+		winston.info(`MongoDB connected successfully. Database: ${dbName}.`);
+	} catch (error) {
+		winston.error(
+			`MongoDB connection was failed: ${error.message}`,
+			error.message
+		);
+		setTimeout(connectWithRetry, RECONNECT_INTERVAL);
+	}
+};
+
+(async () => {
+	await connectWithRetry();
+})();
 
 module.exports = mongo;
