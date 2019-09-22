@@ -13,5 +13,10 @@ jobs:
           node-version: 10.x
       - name: Install
         run: npm install
+      - name: Generate JWT keys
+        run: |
+          ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key
+          rm private.key.pub
+          openssl rsa -in private.key -pubout -outform PEM -out public.key
       - name: Test
         run: docker-compose up --exit-code-from web
