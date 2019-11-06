@@ -19,7 +19,18 @@ app.disable('x-powered-by');
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.get('/', (req, res) => res.status(200).send('ok'));
+app.get('/healthcheck', (req, res) => {
+	try {
+		res.send({
+			uptime: Math.round(process.uptime()),
+			message: 'OK',
+			timestamp: Date.now(),
+			mongodb: mongo.isConnected()
+		});
+	} catch (e) {
+		res.status(503).end();
+	}
+});
 app.use(authorization);
 app.use('/v1', routes);
 app.use(errors());

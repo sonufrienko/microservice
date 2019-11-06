@@ -73,6 +73,11 @@ const connectWithRetry = async () => {
 	}
 };
 
+const isConnected = () =>
+	(mongo && mongo.db && mongo.db.topology && mongo.db.topology.isConnected()) ||
+	false;
+
 mongo.connectWithRetry = connectWithRetry;
+mongo.isConnected = isConnected;
 
 module.exports = mongo;
