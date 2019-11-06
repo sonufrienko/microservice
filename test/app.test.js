@@ -17,10 +17,13 @@ describe('Server', () => {
 
 	test('Healthcheck', async () => {
 		await request(app)
-			.get('/')
+			.get('/healthcheck')
 			.expect(200)
-			.expect('Content-Type', /text/)
-			.expect('ok');
+			.expect('Content-Type', /json/)
+			.then(res => {
+				expect(res.body.mongodb).toBeTruthy();
+				expect(res.body.uptime).toBeGreaterThan(0);
+			});
 	});
 
 	test('Valid authorization', async () => {
